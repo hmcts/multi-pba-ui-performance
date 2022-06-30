@@ -8,7 +8,7 @@ import uk.gov.hmcts.multipba.util._
 
 object ApproveOrg {
 
-  val adminDomain=Environment.adminDomain
+  val AdminUrl = Environment.adminUrl
 
 	val ApproveOrgHomepage = 
 
@@ -40,7 +40,8 @@ object ApproveOrg {
       .check(regex("callback&state=(.*)&nonce=").saveAs("state"))
       .check(regex("&nonce=(.*)&response_type").saveAs("nonce")))
 
-    .exec(getCookieValue(CookieKey("XSRF-TOKEN").withDomain(adminDomain).saveAs("XSRFToken")))
+    // .exec(getCookieValue(CookieKey("XSRF-TOKEN").withDomain(adminDomain).saveAs("XSRFToken")))
+    .exec(getCookieValue(CookieKey("XSRF-TOKEN").withDomain(AdminUrl.replace("https://", "")).saveAs("XSRFToken")))
 
     .pause(4)
 
