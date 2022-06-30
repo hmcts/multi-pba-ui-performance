@@ -55,8 +55,10 @@ class MultiPBASimulation extends Simulation{
   val httpProtocol = http
 		.baseUrl(Environment.BaseUrl.replace("${env}", s"${env}"))
 		.inferHtmlResources()
+    .doNotTrackHeader("1")
+    // .userAgentHeader("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.0.0 Safari/537.36")
 		.silentResources
-    .disableCaching
+    // .disableCaching
 
 	before{
 		println(s"Test Type: ${testType}")
@@ -72,10 +74,12 @@ class MultiPBASimulation extends Simulation{
         )
     }
 
-  val ApproveOrg = scenario("Approve and edit an Org")
+  val ApproveAnOrg = scenario("Approve and edit an Org")
     .exitBlockOnFail {
       exec(_.set("env", s"${env}"))
         .exec(
+          ApproveOrg.ApproveOrgHomepage,
+          ApproveOrg.ApproveOrgLogin
       )
 		}
 
@@ -131,8 +135,8 @@ class MultiPBASimulation extends Simulation{
   }
 
 	setUp(
-		ManageOrg.inject(simulationProfile(testType, manageOrgTargetPerHour, numberOfPipelineUsers)).pauses(pauseOption),
-		// ApproveOrg.inject(simulationProfile(testType, approveOrgTargetPerHour, numberOfPipelineUsers)).pauses(pauseOption),
+		// ManageOrg.inject(simulationProfile(testType, manageOrgTargetPerHour, numberOfPipelineUsers)).pauses(pauseOption),
+		ApproveAnOrg.inject(simulationProfile(testType, approveOrgTargetPerHour, numberOfPipelineUsers)).pauses(pauseOption),
 		
 	).protocols(httpProtocol)
      .assertions(assertions(testType))
