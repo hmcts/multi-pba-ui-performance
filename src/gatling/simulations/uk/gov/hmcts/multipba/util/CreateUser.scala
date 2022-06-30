@@ -1,9 +1,9 @@
-package uk.gov.hmcts.prd.util
+package uk.gov.hmcts.multipba.util
 
 import com.typesafe.config.{Config, ConfigFactory}
 import io.gatling.core.Predef._
 import io.gatling.http.Predef._
-import uk.gov.hmcts.prd.util.Environment._
+import uk.gov.hmcts.multipba.util.Environment._
 import scala.concurrent.duration._
 import scala.util.Random
 
@@ -13,7 +13,7 @@ object CreateUser {
   private val rng: Random = new Random()
   private def firstName(): String = rng.alphanumeric.take(20).mkString
   private def lastName(): String = rng.alphanumeric.take(20).mkString
-  private def email(): String = rng.alphanumeric.take(15).mkString + "@prdperftestuser.com"
+  private def email(): String = rng.alphanumeric.take(15).mkString + "@multipbaperftestuser.com"
   private def password(): String = rng.alphanumeric.take(20).mkString
 
   val userString = "{\"email\": \"${Email}\", \"forename\": \"${FirstName}\", \"password\": \"P${Password}123\", \"surname\": \"${LastName}\"}"

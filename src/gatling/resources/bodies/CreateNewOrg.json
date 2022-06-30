@@ -1,0 +1,22 @@
+{
+  "fromValues": {
+     "haveDXNumber": "dontHaveDX",
+     "orgName": "perf-${currentDate}-${currentTime}",
+     "createButton": "Continue",
+     "officeAddressOne": "12 Test Street",
+     "officeAddressTwo": null,
+     "townOrCity": "London",
+     "county": "London",
+     "postcode": "KT25BU",
+     "PBANumber1": "PBA${currentTime}AAA",
+     "addAnotherPBANumber": "Add another PBA number",
+     "PBANumber2": "PBA${currentTime}AAB",
+     "PBANumber3": "PBA${currentTime}AAC",
+     "haveDx": "no",
+     "haveSra": "no",
+     "firstName": "John",
+     "lastName": "Smith",
+     "emailAddress": "john@perf${currentDate}${currentTime}.com"
+  },
+  "event": "continue"
+}

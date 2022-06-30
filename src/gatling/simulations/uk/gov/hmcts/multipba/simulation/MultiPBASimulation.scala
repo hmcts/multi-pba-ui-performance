@@ -10,7 +10,7 @@ import io.gatling.commons.stats.assertion.Assertion
 import io.gatling.core.pause.PauseType
 import scala.concurrent.duration._
 
-class PRDPTSimulation extends Simulation{
+class MultiPBASimulation extends Simulation{
 
   val config: Config = ConfigFactory.load()
 	/* TEST TYPE DEFINITION */
@@ -68,6 +68,7 @@ class PRDPTSimulation extends Simulation{
 		.exitBlockOnFail {
       exec(_.set("env", s"${env}"))
         .exec(
+          CreateOrg.CreateNewOrg
         )
     }
 
@@ -110,14 +111,14 @@ class PRDPTSimulation extends Simulation{
       case "perftest" =>
         if (debugMode == "off") {
           Seq(global.successfulRequests.percent.gte(95),
-            details("RD18_Internal_UpdateUserStatus").successfulRequests.count.gte((manageOrgTargetPerHour * 0.9).ceil.toInt),
-            details("RD29_External_UpdateUserStatus").successfulRequests.count.gte((approveOrgTargetPerHour * 0.9).ceil.toInt)
+            // details("RD18_Internal_UpdateUserStatus").successfulRequests.count.gte((manageOrgTargetPerHour * 0.9).ceil.toInt),
+            // details("RD29_External_UpdateUserStatus").successfulRequests.count.gte((approveOrgTargetPerHour * 0.9).ceil.toInt)
           )
         }
         else{
           Seq(global.successfulRequests.percent.gte(95),
-            details("RD18_Internal_UpdateUserStatus").successfulRequests.count.is(1),
-            details("RD29_External_UpdateUserStatus").successfulRequests.count.is(1)
+            // details("RD18_Internal_UpdateUserStatus").successfulRequests.count.is(1),
+            // details("RD29_External_UpdateUserStatus").successfulRequests.count.is(1)
           )
         }
       case "pipeline" =>
@@ -131,7 +132,7 @@ class PRDPTSimulation extends Simulation{
 
 	setUp(
 		ManageOrg.inject(simulationProfile(testType, manageOrgTargetPerHour, numberOfPipelineUsers)).pauses(pauseOption),
-		ApproveOrg.inject(simulationProfile(testType, approveOrgTargetPerHour, numberOfPipelineUsers)).pauses(pauseOption),
+		// ApproveOrg.inject(simulationProfile(testType, approveOrgTargetPerHour, numberOfPipelineUsers)).pauses(pauseOption),
 		
 	).protocols(httpProtocol)
      .assertions(assertions(testType))
