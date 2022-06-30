@@ -1,0 +1,42 @@
+#!groovy
+
+properties([
+    pipelineTriggers([cron('00 22 * * *')]),
+    parameters([
+        choice(name: 'TEST_TYPE', choices: 'pipeline', description: 'Test type (must be \'pipeline\' for Jenkins use)')
+    ])
+])
+
+@Library("Infrastructure")
+
+def type = "java"
+def product = "xui"
+def component = "manage-org"
+
+// def secrets = [
+//     's2s-aat': [
+//         secret('microservicekey-rd-professional-api', 'S2S_SECRET')
+//     ],
+//     'rd-aat': [
+//         secret('OAUTH2-CLIENT-SECRET', 'OAUTH2_CLIENT_SECRET')
+//     ]
+// ]
+
+static LinkedHashMap<String, Object> secret(String secretName, String envVar) {
+    [$class     : 'AzureKeyVaultSecret',
+     secretType : 'Secret',
+     name       : secretName,
+     version    : '',
+     envVariable: envVar
+    ]
+}
+
+withNightlyPipeline("java", product, component) {
+    loadVaultSecrets(secrets)
+
+    // enablePerformanceTest(20)
+
+    after('performanceTest') {
+        steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'functional-output/**/*'
+    }
+}
