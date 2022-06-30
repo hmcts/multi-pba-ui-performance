@@ -41,9 +41,10 @@ object ApproveOrg {
       .check(regex("&nonce=(.*)&response_type").saveAs("nonce")))
 
     // .exec(getCookieValue(CookieKey("XSRF-TOKEN").withDomain(adminDomain).saveAs("XSRFToken")))
-    .exec(getCookieValue(CookieKey("XSRF-TOKEN").withDomain(AdminUrl.replace("https://", "")).saveAs("XSRFToken")))
+    .exec(getCookieValue(CookieKey("XSRF-TOKEN").withDomain("administer-orgs.perftest.platform.hmcts.net").saveAs("XSRFToken")))
+    // .exec(getCookieValue(CookieKey("XSRF-TOKEN").withDomain(AdminUrl.replace("https://", "")).saveAs("XSRFToken")))
 
-    .pause(4)
+    .pause(Environment.thinkTime)
 
   val ApproveOrgLogin =
 
@@ -80,10 +81,11 @@ object ApproveOrg {
     .exec(http("request_13")
       .post(Environment.adminUrl + "/api/organisations?status=PENDING,REVIEW")
       .headers(Environment.commonHeader)
+      .header("content-type", "application/json")
       .header("x-xsrf-token", "${XSRFToken}")
-      .body(RawFileBody("approveOrg1_0013_request.txt")))
+      .body(ElFileBody("bodies/AdminOrgHomeSearch.json")))
       
-    .pause(11)
+    .pause(Environment.thinkTime)
 
   val SearchOrg = 
 
@@ -91,24 +93,29 @@ object ApproveOrg {
     exec(http("request_15")
       .post(Environment.adminUrl + "/api/organisations?status=PENDING,REVIEW")
       .headers(Environment.commonHeader)
+      .header("content-type", "application/json")
       .header("x-xsrf-token", "${XSRFToken}")
-      .body(RawFileBody("approveOrg1_0015_request.txt")))
+      .body(ElFileBody("bodies/AdminOrgSearchOrg.json"))
+      .check(jsonPath("$.organisations[0].organisationIdentifier").saveAs("OrgID")))
 
-    .pause(4)
+    .pause(Environment.thinkTime)
+
+  val ViewOrg = 
 
     //View org
-    .exec(http("request_16")
+    exec(http("request_16")
       .get(Environment.adminUrl + "/auth/isAuthenticated")
       .headers(Environment.commonHeader)
       .header("accept", "application/json, text/plain, */*"))
 
     .exec(http("request_17")
-      .get(Environment.adminUrl + "/api/organisations?organisationId=3NHUNYK")
+      .get(Environment.adminUrl + "/api/organisations?organisationId=${OrgID}")
       .headers(Environment.commonHeader)
+      .header("content-type", "application/json")
       .header("accept", "application/json, text/plain, */*"))
 
     .exec(http("request_18")
-      .get(Environment.adminUrl + "/api/organisations?usersOrgId=3NHUNYK")
+      .get(Environment.adminUrl + "/api/organisations?usersOrgId=${OrgID}")
       .headers(Environment.commonHeader)
       .header("accept", "application/json, text/plain, */*")
       .check(status.is(500)))
@@ -134,7 +141,7 @@ object ApproveOrg {
       .header("accept", "application/json, text/plain, */*"))
 
     .exec(http("request_23")
-      .get(Environment.adminUrl + "/api/organisations?organisationId=3NHUNYK")
+      .get(Environment.adminUrl + "/api/organisations?organisationId=${OrgID}")
       .headers(Environment.commonHeader)
       .header("accept", "application/json, text/plain, */*"))
 
@@ -153,12 +160,12 @@ object ApproveOrg {
       .header("accept", "application/json, text/plain, */*"))
 
     .exec(http("request_26")
-      .get(Environment.adminUrl + "/api/organisations?organisationId=3NHUNYK")
+      .get(Environment.adminUrl + "/api/organisations?organisationId=${OrgID}")
       .headers(Environment.commonHeader)
       .header("accept", "application/json, text/plain, */*"))
 
     .exec(http("request_27")
-      .get(Environment.adminUrl + "/api/organisations?usersOrgId=3NHUNYK")
+      .get(Environment.adminUrl + "/api/organisations?usersOrgId=${OrgID}")
       .headers(Environment.commonHeader)
       .header("accept", "application/json, text/plain, */*")
       .check(status.is(500)))
@@ -179,7 +186,7 @@ object ApproveOrg {
 
     //Approve Org
     .exec(http("request_30")
-      .put(Environment.adminUrl + "/api/organisations/3NHUNYK")
+      .put(Environment.adminUrl + "/api/organisations/${OrgID}")
       .headers(Environment.commonHeader)
       .header("x-xsrf-token", "${XSRFToken}")
       .body(RawFileBody("approveOrg1_0030_request.txt")))

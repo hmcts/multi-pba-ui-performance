@@ -10,6 +10,10 @@ import io.gatling.commons.stats.assertion.Assertion
 import io.gatling.core.pause.PauseType
 import scala.concurrent.duration._
 
+import scala.io.Source
+import io.gatling.core.controller.inject.open.OpenInjectionStep
+import io.gatling.commons.stats.assertion.Assertion
+import io.gatling.core.pause.PauseType
 class MultiPBASimulation extends Simulation{
 
   val config: Config = ConfigFactory.load()
@@ -83,6 +87,17 @@ class MultiPBASimulation extends Simulation{
       )
 		}
 
+  val ManageAndApproveOrg = scenario("Create a new org with and Approve")
+		.exitBlockOnFail {
+      exec(_.set("env", s"${env}"))
+        .exec(
+          CreateOrg.CreateNewOrg,
+          ApproveOrg.ApproveOrgHomepage,
+          ApproveOrg.ApproveOrgLogin,
+          ApproveOrg.SearchOrg
+        )
+    }
+
 
 	/*===============================================================================================
 	* Simulation Configuration
@@ -136,7 +151,8 @@ class MultiPBASimulation extends Simulation{
 
 	setUp(
 		// ManageOrg.inject(simulationProfile(testType, manageOrgTargetPerHour, numberOfPipelineUsers)).pauses(pauseOption),
-		ApproveAnOrg.inject(simulationProfile(testType, approveOrgTargetPerHour, numberOfPipelineUsers)).pauses(pauseOption),
+		// ApproveAnOrg.inject(simulationProfile(testType, approveOrgTargetPerHour, numberOfPipelineUsers)).pauses(pauseOption),
+		ManageAndApproveOrg.inject(simulationProfile(testType, approveOrgTargetPerHour, numberOfPipelineUsers)).pauses(pauseOption),
 		
 	).protocols(httpProtocol)
      .assertions(assertions(testType))

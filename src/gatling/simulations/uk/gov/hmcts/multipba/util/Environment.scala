@@ -9,14 +9,8 @@ object Environment {
   val S2SUrl = "http://rpe-service-auth-provider-${env}.service.core-compute-${env}.internal/testing-support"
   val BaseUrl = "https://manage-org.${env}.platform.hmcts.net"
   val adminUrl = "https://administer-orgs.${env}.platform.hmcts.net"
-  val adminDomain = "administer-orgs.${env}.platform.hmcts.net"
 
-  val thinkTime = 5 //7
-
-  val minThinkTime = 5
-  //10
-  val maxThinkTime = 6
-  //30
+  val thinkTime = 7 //7
 
   val commonHeader = Map(
     "accept" -> "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9",
