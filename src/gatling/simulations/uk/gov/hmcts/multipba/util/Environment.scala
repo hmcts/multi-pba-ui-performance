@@ -1,6 +1,6 @@
 package uk.gov.hmcts.multipba.util
 
-import com.typesafe.config.ConfigFactory
+import scala.util.Random
 
 object Environment {
 
@@ -24,4 +24,5 @@ object Environment {
 		"sec-fetch-user" -> "?1",
 		"upgrade-insecure-requests" -> "1",
     "origin" -> Environment.BaseUrl)
+
 }

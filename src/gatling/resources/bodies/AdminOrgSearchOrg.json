@@ -1,6 +1,6 @@
 {
   "searchRequest": {
-     "search_filter": "perf-${currentDate}-${currentTime}",
+     "search_filter": "perf-${currentDate}-${currentTime}-${RandDigits}",
      "sorting_parameters": [
         {
            "sort_by": "organisationId",

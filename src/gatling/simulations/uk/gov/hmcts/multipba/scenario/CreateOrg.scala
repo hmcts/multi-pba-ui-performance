@@ -13,36 +13,34 @@ import scala.util.Random
 
 object CreateOrg {
 
-  private val rng: Random = new Random()
-  val patternDate = DateTimeFormatter.ofPattern("ddMMyy")
-  val patternTime = DateTimeFormatter.ofPattern("HHmm")
-  val now = LocalDateTime.now()
-  private def firstName(): String = rng.alphanumeric.take(20).mkString
-  private def lastName(): String = rng.alphanumeric.take(20).mkString
-
 	val CreateNewOrg = 
 
     exec(_.setAll(
-      ("FirstName",firstName()),
-      ("LastName",lastName()),
-      "currentDate" -> now.format(patternDate),
-      "currentTime" -> now.format(patternTime)
+      ("FirstName",Common.randomString(10)),
+      ("LastName",Common.randomString(10)),
+      ("RandDigits",Common.randomString(5).toUpperCase()),
+      ("RandPBA1",Common.randomString(3).toUpperCase()),
+      ("RandPBA2",Common.randomString(3).toUpperCase()),
+      ("RandPBA3",Common.randomString(3).toUpperCase()),
+      "currentDate" -> Common.now.format(Common.patternDate),
+      "currentTime" -> Common.now.format(Common.patternTime)
     ))
-  
-    .exec(http("request_0")
-			.get("/register-org/register")
-			.headers(Environment.commonHeader))
 
-    .exec(getCookieValue(CookieKey("XSRF-TOKEN")//.withDomain(Environment.BaseUrl)
-      .saveAs("XSRFToken")))
+    .group("CreateOrg_010_HomePage") {
+      exec(http("CreateOrg_010_005_RegisterHomePage")
+        .get("/register-org/register")
+        .headers(Environment.commonHeader))
 
-    .exec(http("request_1")
-			.get("/external/configuration-ui/")
-			.headers(Environment.commonHeader))
+      .exec(getCookieValue(CookieKey("XSRF-TOKEN").saveAs("XSRFToken")))
 
-		.pause(54)
+      .exec(http("CreateOrg_010_010_RegisterHomePage")
+        .get("/external/configuration-ui/")
+        .headers(Environment.commonHeader))
+    }
 
-		.exec(http("request_3")
+		.pause(Environment.thinkTime)
+
+		.exec(http("CreateOrg_020_SubmitNewOrgRegistration")
 			.post("/external/register-org/register")
 			.headers(Environment.commonHeader)
       .header("content-type", "application/json")
@@ -50,12 +48,14 @@ object CreateOrg {
 			.body(ElFileBody("bodies/CreateNewOrg.json"))
       .check(jsonPath("$.organisationIdentifier").saveAs("orgId")))
 
-    
+    .pause(Environment.thinkTime)
+
+    //Outputs the newly created Org ID and Org Name
     .exec {
       session =>
         val fw = new BufferedWriter(new FileWriter("NewOrgIDs.csv", true))
         try {
-          fw.write(session("orgId").as[String] + "\r\n")
+          fw.write(session("orgId").as[String] + "," + "perf" + "-" + session("currentDate").as[String] + "-" + session("currentTime").as[String] + "_" + session("RandDigits").as[String] + "\r\n")
         }
         finally fw.close()
         session
