@@ -11,6 +11,7 @@ import scala.util.Random
 object ApproveOrg {
 
   val AdminUrl = Environment.adminUrl
+  val adminusers = csv("AdminOrgUsers.csv")
 
   private val rng: Random = new Random()
 
@@ -54,8 +55,10 @@ object ApproveOrg {
 
   val ApproveOrgLogin =
 
+    feed(adminusers)
+
     //Login
-    group("AdminOrg_020_Login") {
+    .group("AdminOrg_020_Login") {
       exec(http("AdminOrg_020_005_Login")
         .post(Environment.idamURL + "/login?client_id=xuiaowebapp&redirect_uri=" + Environment.adminUrl + "/oauth2/callback&state=${state}&nonce=${nonce}&response_type=code&scope=profile%20openid%20roles%20manage-user%20create-user&prompt=")
         .headers(Environment.commonHeader)
