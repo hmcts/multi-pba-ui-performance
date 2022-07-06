@@ -21,7 +21,7 @@
      "${PBA1}",
      "${PBA2}",
      "${PBA3}",
-     "PBA${currentTime}${threeLetters}"
+     "PBA${newPBA}"
   ],
   "pendingPaymentAccount": []
 }

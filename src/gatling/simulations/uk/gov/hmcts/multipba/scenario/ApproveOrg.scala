@@ -11,7 +11,7 @@ import scala.util.Random
 object ApproveOrg {
 
   val AdminUrl = Environment.adminUrl
-  val adminusers = csv("AdminOrgUsers.csv")
+  val adminusers = csv("AdminOrgUsers.csv").circular
 
   private val rng: Random = new Random()
 
@@ -174,7 +174,7 @@ object ApproveOrg {
   val AddNewPBA = 
 
     exec(_.setAll(
-      ("threeLetters",Common.randomString(3).toUpperCase())
+      ("newPBA",Common.randomNumber(7))
     ))
 
     //Add new PBA
@@ -203,7 +203,7 @@ object ApproveOrg {
         .check(status.in(500, 304)))
 
       .exec(http("AdminOrg_040_025_AddPBA")
-        .get(Environment.adminUrl + "/api/pbaAccounts/?accountNames=PBA${currentTime}${threeLetters},${PBA1},${PBA2},${PBA3}")
+        .get(Environment.adminUrl + "/api/pbaAccounts/?accountNames=PBA${newPBA},${PBA1},${PBA2},${PBA3}")
         .headers(Environment.commonHeader)
         .header("accept", "application/json, text/plain, */*"))
 

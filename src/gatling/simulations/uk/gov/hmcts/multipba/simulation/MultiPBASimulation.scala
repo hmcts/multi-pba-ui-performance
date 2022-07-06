@@ -36,11 +36,11 @@ class MultiPBASimulation extends Simulation{
 	/* ******************************** */
 
 	/* PERFORMANCE TEST CONFIGURATION */
-	val approveOrgTargetPerHour:Double = 360
+	val approveOrgTargetPerHour:Double = 360 //360
 
-	val rampUpDurationMins = 5
-	val rampDownDurationMins = 5
-	val testDurationMins = 60
+	val rampUpDurationMins = 5 //5
+	val rampDownDurationMins = 5 //5 
+	val testDurationMins = 60 //60
 
 	val numberOfPipelineUsers = 5
 	val pipelinePausesMillis:Long = 3000 //3 seconds
@@ -61,7 +61,7 @@ class MultiPBASimulation extends Simulation{
     .doNotTrackHeader("1")
     // .userAgentHeader("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.0.0 Safari/537.36")
 		.silentResources
-    // .disableCaching
+    .disableCaching
 
 	before{
 		println(s"Test Type: ${testType}")

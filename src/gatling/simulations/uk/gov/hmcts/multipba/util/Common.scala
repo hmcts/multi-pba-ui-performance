@@ -16,4 +16,8 @@ object Common {
     rnd.alphanumeric.filter(_.isLetter).take(length).mkString
   }
 
+  def randomNumber(length: Int) = {
+    rnd.alphanumeric.filter(_.isDigit).take(length).mkString
+  }
+
 }

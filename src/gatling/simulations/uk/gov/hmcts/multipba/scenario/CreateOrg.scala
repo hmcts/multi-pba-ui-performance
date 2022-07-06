@@ -19,9 +19,12 @@ object CreateOrg {
       ("FirstName",Common.randomString(10)),
       ("LastName",Common.randomString(10)),
       ("RandDigits",Common.randomString(5).toUpperCase()),
-      ("RandPBA1",Common.randomString(3).toUpperCase()),
-      ("RandPBA2",Common.randomString(3).toUpperCase()),
-      ("RandPBA3",Common.randomString(3).toUpperCase()),
+      // ("RandPBA1",Common.randomString(3).toUpperCase()),
+      // ("RandPBA2",Common.randomString(3).toUpperCase()),
+      // ("RandPBA3",Common.randomString(3).toUpperCase()),
+      ("RandPBA1",Common.randomNumber(7)),
+      ("RandPBA2",Common.randomNumber(7)),
+      ("RandPBA3",Common.randomNumber(7)),
       "currentDate" -> Common.now.format(Common.patternDate),
       "currentTime" -> Common.now.format(Common.patternTime)
     ))
