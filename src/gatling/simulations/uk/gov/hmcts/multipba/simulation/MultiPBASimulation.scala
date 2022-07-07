@@ -69,7 +69,7 @@ class MultiPBASimulation extends Simulation{
 		println(s"Debug Mode: ${debugMode}")
 	}
 
-  val ManageAndApproveOrg = scenario("Create a new org with and Approve")
+  val ManageAndApproveOrg = scenario("Create a new org with Multiple PBAs and Approve")
 		.exitBlockOnFail {
       exec(_.set("env", s"${env}"))
         .exec(
