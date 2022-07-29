@@ -1,7 +1,7 @@
 {
   "fromValues": {
      "haveDXNumber": "dontHaveDX",
-     "orgName": "perf-${currentDate}-${currentTime}-${RandDigits}",
+     "orgName": "MultiPerf-${currentDate}-${currentTime}-${RandDigits}",
      "createButton": "Continue",
      "officeAddressOne": "12 Test Street",
      "officeAddressTwo": null,
@@ -16,7 +16,7 @@
      "haveSra": "no",
      "firstName": "${FirstName}",
      "lastName": "${LastName}",
-     "emailAddress": "${FirstName}.${LastName}@perf${currentDate}${currentTime}.com"
+     "emailAddress": "${FirstName}.${LastName}@MultiPerf.com"
   },
   "event": "continue"
 }

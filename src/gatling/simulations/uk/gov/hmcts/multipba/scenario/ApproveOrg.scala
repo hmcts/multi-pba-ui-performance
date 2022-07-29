@@ -125,45 +125,45 @@ object ApproveOrg {
   val ViewOrg = 
 
     //View org
-    group("AdminOrg_030_ViewOrg") {
-      exec(http("AdminOrg_030_005_ViewOrg")
+    group("AdminOrg_040_ViewOrg") {
+      exec(http("AdminOrg_040_005_ViewOrg")
         .get(Environment.adminUrl + "/auth/isAuthenticated")
         .headers(Environment.commonHeader)
         .header("accept", "application/json, text/plain, */*"))
 
-      .exec(http("AdminOrg_030_010_ViewOrg")
+      .exec(http("AdminOrg_040_010_ViewOrg")
         .get(Environment.adminUrl + "/api/organisations?organisationId=${OrgID}")
         .headers(Environment.commonHeader)
         .header("content-type", "application/json")
         .header("accept", "application/json, text/plain, */*"))
 
-      .exec(http("AdminOrg_030_015_ViewOrg")
+      .exec(http("AdminOrg_040_015_ViewOrg")
         .get(Environment.adminUrl + "/api/organisations?usersOrgId=${OrgID}")
         .headers(Environment.commonHeader)
         .header("accept", "application/json, text/plain, */*")
         .check(status.in(500, 304)))
 
-      .exec(http("AdminOrg_030_020_ViewOrg")
+      .exec(http("AdminOrg_040_020_ViewOrg")
         .get(Environment.adminUrl + "/api/monitoring-tools")
         .headers(Environment.commonHeader)
         .header("accept", "application/json, text/plain, */*"))
 
-      .exec(http("AdminOrg_030_025_ViewOrg")
+      .exec(http("AdminOrg_040_025_ViewOrg")
         .get(Environment.adminUrl + "/api/pbaAccounts/?accountNames=${PBA1},${PBA2},${PBA3}")
         .headers(Environment.commonHeader)
         .header("accept", "application/json, text/plain, */*"))
 
-      .exec(http("AdminOrg_030_030_ViewOrg")
+      .exec(http("AdminOrg_040_030_ViewOrg")
         .get(Environment.adminUrl + "/api/pbaAccounts/?accountNames=${PBA1},${PBA2},${PBA3},${PBA1},${PBA2},${PBA3}")
         .headers(Environment.commonHeader)
         .header("accept", "application/json, text/plain, */*"))
 
-      .exec(http("AdminOrg_030_035_ViewOrg")
+      .exec(http("AdminOrg_040_035_ViewOrg")
         .get(Environment.adminUrl + "/auth/isAuthenticated")
         .headers(Environment.commonHeader)
         .header("accept", "application/json, text/plain, */*"))
 
-      .exec(http("AdminOrg_030_040_ViewOrg")
+      .exec(http("AdminOrg_040_040_ViewOrg")
         .get(Environment.adminUrl + "/api/organisations?organisationId=${OrgID}")
         .headers(Environment.commonHeader)
         .header("accept", "application/json, text/plain, */*"))
@@ -178,36 +178,36 @@ object ApproveOrg {
     ))
 
     //Add new PBA
-    .group("AdminOrg_040_AddPBA") {
-      exec(http("AdminOrg_040_005_AddPBA")
+    .group("AdminOrg_050_AddPBA") {
+      exec(http("AdminOrg_050_005_AddPBA")
         .put(Environment.adminUrl + "/api/updatePba")
         .headers(Environment.commonHeader)
         .header("content-type", "application/json")
         .header("x-xsrf-token", "${XSRFToken}")
         .body(ElFileBody("bodies/AdminAddPBA.json")))
 
-      .exec(http("AdminOrg_040_010_AddPBA")
+      .exec(http("AdminOrg_050_010_AddPBA")
         .get(Environment.adminUrl + "/auth/isAuthenticated")
         .headers(Environment.commonHeader)
         .header("accept", "application/json, text/plain, */*"))
 
-      .exec(http("AdminOrg_040_015_AddPBA")
+      .exec(http("AdminOrg_050_015_AddPBA")
         .get(Environment.adminUrl + "/api/organisations?organisationId=${OrgID}")
         .headers(Environment.commonHeader)
         .header("accept", "application/json, text/plain, */*"))
 
-      .exec(http("AdminOrg_040_020_AddPBA")
+      .exec(http("AdminOrg_050_020_AddPBA")
         .get(Environment.adminUrl + "/api/organisations?usersOrgId=${OrgID}")
         .headers(Environment.commonHeader)
         .header("accept", "application/json, text/plain, */*")
         .check(status.in(500, 304)))
 
-      .exec(http("AdminOrg_040_025_AddPBA")
+      .exec(http("AdminOrg_050_025_AddPBA")
         .get(Environment.adminUrl + "/api/pbaAccounts/?accountNames=PBA${newPBA},${PBA1},${PBA2},${PBA3}")
         .headers(Environment.commonHeader)
         .header("accept", "application/json, text/plain, */*"))
 
-      .exec(http("AdminOrg_040_030_AddPBA")
+      .exec(http("AdminOrg_00_030_AddPBA")
         .get(Environment.adminUrl + "/auth/isAuthenticated")
         .headers(Environment.commonHeader)
         .header("accept", "application/json, text/plain, */*"))
@@ -218,20 +218,20 @@ object ApproveOrg {
   val ApproveNewOrg = 
 
     //Approve Org
-    group("AdminOrg_050_ApproveOrg") {
-      exec(http("AdminOrg_050_005_ApproveOrg")
+    group("AdminOrg_060_ApproveOrg") {
+      exec(http("AdminOrg_060_005_ApproveOrg")
         .put(Environment.adminUrl + "/api/organisations/${OrgID}")
         .headers(Environment.commonHeader)
         .header("content-type", "application/json")
         .header("x-xsrf-token", "${XSRFToken}")
         .body(ElFileBody("bodies/AdminApproveOrg.json")))
 
-      .exec(http("AdminOrg_050_010_ApproveOrg")
+      .exec(http("AdminOrg_060_010_ApproveOrg")
         .get(Environment.adminUrl + "/auth/isAuthenticated")
         .headers(Environment.commonHeader)
         .header("accept", "application/json, text/plain, */*"))
 
-      .exec(http("AdminOrg_050_015_ApproveOrg")
+      .exec(http("AdminOrg_060_015_ApproveOrg")
         .post(Environment.adminUrl + "/api/organisations?status=PENDING,REVIEW")
         .headers(Environment.commonHeader)
         .header("content-type", "application/json")
@@ -244,7 +244,7 @@ object ApproveOrg {
   val Logout =
 
     //Logout
-    exec(http("AdminOrg_060_Logout")
+    exec(http("AdminOrg_070_Logout")
       .get(Environment.adminUrl + "/auth/logout")
       .headers(Environment.commonHeader))
 
