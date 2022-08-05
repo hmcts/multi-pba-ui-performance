@@ -116,15 +116,15 @@ class MultiPBASimulation extends Simulation{
         if (debugMode == "off") {
           Seq(global.successfulRequests.percent.gte(95),
             details("CreateOrg_020_SubmitNewOrgRegistration").successfulRequests.count.gte((approveOrgTargetPerHour * 0.9).ceil.toInt),
-            details("AdminOrg_040_AddPBA").successfulRequests.count.gte((approveOrgTargetPerHour * 0.9).ceil.toInt),
-            details("AdminOrg_050_ApproveOrg").successfulRequests.count.gte((approveOrgTargetPerHour * 0.9).ceil.toInt)
+            details("AdminOrg_050_AddPBA").successfulRequests.count.gte((approveOrgTargetPerHour * 0.9).ceil.toInt),
+            details("AdminOrg_060_ApproveOrg").successfulRequests.count.gte((approveOrgTargetPerHour * 0.9).ceil.toInt)
           )
         }
         else{
           Seq(global.successfulRequests.percent.gte(95),
             details("CreateOrg_020_SubmitNewOrgRegistration").successfulRequests.count.is(1),
-            details("AdminOrg_040_AddPBA").successfulRequests.count.is(1),
-            details("AdminOrg_050_ApproveOrg").successfulRequests.count.is(1)
+            details("AdminOrg_050_AddPBA").successfulRequests.count.is(1),
+            details("AdminOrg_060_ApproveOrg").successfulRequests.count.is(1)
           )
         }
       case "pipeline" =>
