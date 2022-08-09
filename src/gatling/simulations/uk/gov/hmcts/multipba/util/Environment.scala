@@ -25,4 +25,11 @@ object Environment {
 		"upgrade-insecure-requests" -> "1",
     "origin" -> Environment.BaseUrl)
 
+  val postHeader = Map(
+    "accept" -> "application/json, text/plain, */*",
+    "content-type" -> "application/json",
+    "sec-fetch-dest" -> "empty",
+    "sec-fetch-mode" -> "cors",
+    "sec-fetch-site" -> "same-origin")
+
 }
