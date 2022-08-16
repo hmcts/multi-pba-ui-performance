@@ -58,8 +58,6 @@ class MultiPBASimulation extends Simulation{
   val httpProtocol = http
 		.baseUrl(Environment.BaseUrl.replace("${env}", s"${env}"))
 		.inferHtmlResources()
-    .doNotTrackHeader("1")
-    // .userAgentHeader("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.0.0 Safari/537.36")
 		.silentResources
     .disableCaching
 
