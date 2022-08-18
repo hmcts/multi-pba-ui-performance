@@ -28,12 +28,12 @@ object CreateOrg {
 
       .exec(getCookieValue(CookieKey("XSRF-TOKEN").saveAs("XSRFToken")))
 
-      .exec(http("CreateOrg_010_010_RegisterHomePage")
+      .exec(http("CreateOrg_010_010_ConfigurationUI1")
         .get("/external/configuration-ui/")
         .headers(Environment.getHeader)
         .check(substring("idamWeb")))
 
-      .exec(http("CreateOrg_010_015_RegisterHomePage")
+      .exec(http("CreateOrg_010_015_ConfigurationUI2")
         .get("/external/configuration-ui")
         .headers(Environment.getHeader)
         .header("accept", "application/json, text/plain, */*")

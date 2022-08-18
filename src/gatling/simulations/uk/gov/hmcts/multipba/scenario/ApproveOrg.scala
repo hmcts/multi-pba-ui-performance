@@ -17,26 +17,26 @@ object ApproveOrg {
         .headers(Environment.navigationHeader)
         .check(substring("base href")))
 
-      .exec(http("AdminOrg_010_010_Homepage")
+      .exec(http("AdminOrg_010_010_EnvConfig1")
         .get(AdminUrl + "/api/environment/config")
         .headers(Environment.getHeader))
 
-      .exec(http("AdminOrg_010_015_Homepage")
+      .exec(http("AdminOrg_010_015_EnvConfig2")
         .get(AdminUrl + "/api/environment/config")
         .headers(Environment.getHeader)
         .header("accept", "application/json, text/plain, */*"))
 
-      .exec(http("AdminOrg_010_020_Homepage")
+      .exec(http("AdminOrg_010_020_UserDetails")
         .get(AdminUrl + "/api/user/details")
         .headers(Environment.getHeader)
         .header("accept", "application/json, text/plain, */*"))
 
-      .exec(http("AdminOrg_010_025_Homepage")
+      .exec(http("AdminOrg_010_025_IsAuthenticated")
         .get(AdminUrl + "/auth/isAuthenticated")
         .headers(Environment.getHeader)
         .header("accept", "application/json, text/plain, */*"))
 
-      .exec(http("AdminOrg_010_030_Homepage")
+      .exec(http("AdminOrg_010_030_LoadLogin")
         .get(AdminUrl + "/auth/login")
         .headers(Environment.navigationHeader)
         .header("sec-fetch-site", "same-origin")
@@ -65,42 +65,42 @@ object ApproveOrg {
         .formParam("_csrf", "${csrfToken}")
         .check(substring("base href")))
 
-      .exec(http("AdminOrg_020_010_Login")
+      .exec(http("AdminOrg_020_010_EnvConfig1")
         .get(AdminUrl + "/api/environment/config")
         .headers(Environment.getHeader)
         .check(substring("configEnv")))
 
-      .exec(http("AdminOrg_020_015_Login")
+      .exec(http("AdminOrg_020_015_EnvConfig2")
         .get(AdminUrl + "/api/environment/config")
         .headers(Environment.getHeader)
         .header("accept", "application/json, text/plain, */*")
         .check(substring("configEnv")))
 
-      .exec(http("AdminOrg_020_020_Login")
+      .exec(http("AdminOrg_020_020_UserDetails")
         .get(AdminUrl + "/api/user/details")
         .headers(Environment.getHeader)
         .header("accept", "application/json, text/plain, */*")
         .check(substring("idleTime")))
 
-      .exec(http("AdminOrg_020_025_Login")
+      .exec(http("AdminOrg_020_025_IsAuthenticated1")
         .get(AdminUrl + "/auth/isAuthenticated")
         .headers(Environment.getHeader)
         .header("accept", "application/json, text/plain, */*")
         .check(substring("true")))
 
-      .exec(http("AdminOrg_020_030_Login")
+      .exec(http("AdminOrg_020_030_IsAuthenticated2")
         .get(AdminUrl + "/auth/isAuthenticated")
         .headers(Environment.getHeader)
         .header("accept", "application/json, text/plain, */*")
         .check(substring("true")))
 
-      .exec(http("AdminOrg_020_035_Login")
+      .exec(http("AdminOrg_020_035_IsAuthenticated3")
         .get(AdminUrl + "/auth/isAuthenticated")
         .headers(Environment.getHeader)
         .header("accept", "application/json, text/plain, */*")
         .check(substring("true")))
 
-      .exec(http("AdminOrg_020_040_Login")
+      .exec(http("AdminOrg_020_040_GetPendingOrgList")
         .post(AdminUrl + "/api/organisations?status=PENDING,REVIEW")
         .headers(Environment.postHeader)
         .header("x-xsrf-token", "${XSRFToken}")
@@ -135,7 +135,7 @@ object ApproveOrg {
   val ViewOrg = 
 
     group("AdminOrg_040_ViewOrg") {
-      exec(http("AdminOrg_040_005_ViewOrg")
+      exec(http("AdminOrg_040_005_IsAuthenticated")
         .get(AdminUrl + "/auth/isAuthenticated")
         .headers(Environment.getHeader)
         .header("accept", "application/json, text/plain, */*")
@@ -158,13 +158,13 @@ object ApproveOrg {
         .get(AdminUrl + "/api/monitoring-tools")
         .headers(Environment.navigationHeader))
   */
-      .exec(http("AdminOrg_040_025_ViewOrg")
+      .exec(http("AdminOrg_040_025_ViewPBAAccounts1")
         .get(AdminUrl + "/api/pbaAccounts/?accountNames=${PBA1},${PBA2},${PBA3}")
         .headers(Environment.getHeader)
         .header("accept", "application/json, text/plain, */*")
         .check(substring("account_name").count.is(3)))
 
-      .exec(http("AdminOrg_040_030_ViewOrg")
+      .exec(http("AdminOrg_040_030_ViewPBAAccounts2")
         .get(AdminUrl + "/api/pbaAccounts/?accountNames=${PBA1},${PBA2},${PBA3},${PBA1},${PBA2},${PBA3}")
         .headers(Environment.getHeader)
         .header("accept", "application/json, text/plain, */*")
@@ -192,13 +192,13 @@ object ApproveOrg {
     ))
 
     .group("AdminOrg_045_EditPBAs") {
-      exec(http("AdminOrg_045_005_EditPBAs")
+      exec(http("AdminOrg_045_005_IsAuthenticated")
         .get(AdminUrl + "/auth/isAuthenticated")
         .headers(Environment.getHeader)
         .header("accept", "application/json, text/plain, */*")
         .check(substring("true")))
 
-      .exec(http("AdminOrg_045_010_EditPBAs")
+      .exec(http("AdminOrg_045_010_ViewOrg")
         .get(AdminUrl + "/api/organisations?organisationId=${OrgID}")
         .headers(Environment.getHeader)
         .header("accept", "application/json, text/plain, */*")
@@ -209,19 +209,19 @@ object ApproveOrg {
     .pause(Environment.thinkTime)
 
     .group("AdminOrg_050_AddPBA") {
-      exec(http("AdminOrg_050_005_AddPBA")
+      exec(http("AdminOrg_050_005_UpdatePBAs")
         .put(AdminUrl + "/api/updatePba")
         .headers(Environment.postHeader)
         .header("x-xsrf-token", "${XSRFToken}")
         .body(ElFileBody("bodies/AdminAddPBA.json")))
 
-      .exec(http("AdminOrg_050_010_AddPBA")
+      .exec(http("AdminOrg_050_010_IsAuthenticated")
         .get(AdminUrl + "/auth/isAuthenticated")
         .headers(Environment.getHeader)
         .header("accept", "application/json, text/plain, */*")
         .check(substring("true")))
 
-      .exec(http("AdminOrg_050_015_AddPBA")
+      .exec(http("AdminOrg_050_015_ViewOrg")
         .get(AdminUrl + "/api/organisations?organisationId=${OrgID}")
         .headers(Environment.getHeader)
         .header("accept", "application/json, text/plain, */*")
@@ -235,7 +235,7 @@ object ApproveOrg {
         .headers(Environment.navigationHeader)
         .check(status.in(500, 304)))
   */
-      .exec(http("AdminOrg_050_025_AddPBA")
+      .exec(http("AdminOrg_050_025_ViewPBAAccounts")
         .get(AdminUrl + "/api/pbaAccounts/?accountNames=${PBA1},${PBA2},${PBA3},PBA${newPBA}")
         .headers(Environment.getHeader)
         .header("accept", "application/json, text/plain, */*")
@@ -254,7 +254,7 @@ object ApproveOrg {
   val ApproveNewOrg =
 
     group("AdminOrg_055_Approval") {
-      exec(http("AdminOrg_055_005_Approval")
+      exec(http("AdminOrg_055_005_IsAuthenticated")
         .get(AdminUrl + "/auth/isAuthenticated")
         .headers(Environment.getHeader)
         .header("accept", "application/json, text/plain, */*")
@@ -270,25 +270,25 @@ object ApproveOrg {
         .header("x-xsrf-token", "${XSRFToken}")
         .body(ElFileBody("bodies/AdminApproveOrg.json")))
 
-      .exec(http("AdminOrg_060_008_ApproveOrg")
+      .exec(http("AdminOrg_060_008_MonitoringTools")
         .get(AdminUrl + "/api/monitoring-tools")
         .headers(Environment.getHeader)
         .header("accept", "application/json, text/plain, */*")
         .check(substring("key")))
 
-      .exec(http("AdminOrg_060_010_ApproveOrg")
+      .exec(http("AdminOrg_060_010_IsAuthenticated1")
         .get(AdminUrl + "/auth/isAuthenticated")
         .headers(Environment.getHeader)
         .header("accept", "application/json, text/plain, */*")
         .check(substring("true")))
 
-      .exec(http("AdminOrg_060_012_ApproveOrg")
+      .exec(http("AdminOrg_060_012_IsAuthenticated2")
         .get(AdminUrl + "/auth/isAuthenticated")
         .headers(Environment.getHeader)
         .header("accept", "application/json, text/plain, */*")
         .check(substring("true")))
 
-      .exec(http("AdminOrg_060_015_ApproveOrg")
+      .exec(http("AdminOrg_060_015_SearchForOrg")
         .post(AdminUrl + "/api/organisations?status=PENDING,REVIEW")
         .headers(Environment.postHeader)
         .header("x-xsrf-token", "${XSRFToken}")
