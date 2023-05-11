@@ -31,10 +31,10 @@ repositories {
 }
  
 gatling {
-  gatlingVersion '3.8.4'
-  scalaVersion '2.13.9'
+  gatlingVersion '3.9.3'
+  scalaVersion '2.13.10'
   simulations = {
-    include "simulation/MultiPBASimulation"
+    include "simulation/MultiPBASimulation.scala"
   }
 }
  
