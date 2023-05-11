@@ -1,10 +1,10 @@
-package uk.gov.hmcts.multipba.simulation
+package simulation
 
 import com.typesafe.config.{Config, ConfigFactory}
 import io.gatling.core.Predef.{exec, _}
 import io.gatling.http.Predef._
-import uk.gov.hmcts.multipba.scenario._
-import uk.gov.hmcts.multipba.util._
+import scenario._
+import util._
 import io.gatling.core.controller.inject.open.OpenInjectionStep
 import io.gatling.commons.stats.assertion.Assertion
 import io.gatling.core.pause.PauseType
@@ -14,6 +14,7 @@ import scala.io.Source
 import io.gatling.core.controller.inject.open.OpenInjectionStep
 import io.gatling.commons.stats.assertion.Assertion
 import io.gatling.core.pause.PauseType
+
 class MultiPBASimulation extends Simulation{
 
   val config: Config = ConfigFactory.load()

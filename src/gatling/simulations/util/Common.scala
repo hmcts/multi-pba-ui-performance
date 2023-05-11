@@ -1,4 +1,4 @@
-package uk.gov.hmcts.multipba.util
+package util
 
 import scala.util.Random
 import java.time.LocalDateTime

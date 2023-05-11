@@ -1,8 +1,8 @@
-package uk.gov.hmcts.multipba.scenario
+package scenario
 
 import io.gatling.core.Predef._
 import io.gatling.http.Predef._
-import uk.gov.hmcts.multipba.util._
+import util._
 import java.io.{BufferedWriter, FileWriter}
 
 object CreateOrg {
@@ -45,7 +45,7 @@ object CreateOrg {
 		.exec(http("CreateOrg_020_SubmitNewOrgRegistration")
 			.post("/external/register-org/register")
 			.headers(Environment.postHeader)
-      .header("x-xsrf-token", "${XSRFToken}")
+      .header("x-xsrf-token", "#{XSRFToken}")
 			.body(ElFileBody("bodies/CreateNewOrg.json"))
       .check(jsonPath("$.organisationIdentifier").saveAs("orgId")))
 

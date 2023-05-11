@@ -1,8 +1,8 @@
-package uk.gov.hmcts.multipba.scenario
+package scenario
 
 import io.gatling.core.Predef._
 import io.gatling.http.Predef._
-import uk.gov.hmcts.multipba.util._
+import util._
 
 object ApproveOrg {
 
@@ -54,7 +54,7 @@ object ApproveOrg {
     feed(adminusers)
     .group("AdminOrg_020_Login") {
       exec(http("AdminOrg_020_005_Login")
-        .post(Environment.idamURL + "/login?client_id=xuiaowebapp&redirect_uri=" + AdminUrl + "/oauth2/callback&state=${state}&nonce=${nonce}&response_type=code&scope=profile%20openid%20roles%20manage-user%20create-user&prompt=")
+        .post(Environment.idamURL + "/login?client_id=xuiaowebapp&redirect_uri=" + AdminUrl + "/oauth2/callback&state=#{state}&nonce=#{nonce}&response_type=code&scope=profile%20openid%20roles%20manage-user%20create-user&prompt=")
         .headers(Environment.navigationHeader)
         .header("sec-fetch-site", "same-origin")
         .formParam("username", "vmuniganti@mailnesia.com")
@@ -62,7 +62,7 @@ object ApproveOrg {
         .formParam("save", "Sign in")
         .formParam("selfRegistrationEnabled", "false")
         .formParam("mojLoginEnabled", "true")
-        .formParam("_csrf", "${csrfToken}")
+        .formParam("_csrf", "#{csrfToken}")
         .check(substring("base href")))
 
       .exec(http("AdminOrg_020_010_EnvConfig1")
@@ -103,7 +103,7 @@ object ApproveOrg {
       .exec(http("AdminOrg_020_040_GetPendingOrgList")
         .post(AdminUrl + "/api/organisations?status=PENDING,REVIEW")
         .headers(Environment.postHeader)
-        .header("x-xsrf-token", "${XSRFToken}")
+        .header("x-xsrf-token", "#{XSRFToken}")
         .body(ElFileBody("bodies/AdminOrgHomeSearch.json"))
         .check(substring("total_records")))
     }
@@ -115,7 +115,7 @@ object ApproveOrg {
     exec(http("AdminOrg_030_SearchForOrg")
       .post(AdminUrl + "/api/organisations?status=PENDING,REVIEW")
       .headers(Environment.postHeader)
-      .header("x-xsrf-token", "${XSRFToken}")
+      .header("x-xsrf-token", "#{XSRFToken}")
       .body(ElFileBody("bodies/AdminOrgSearchOrg.json"))
       .check(jsonPath("$.organisations[0].organisationIdentifier").saveAs("OrgID"))
       .check(jsonPath("$.organisations[0].name").saveAs("OrgName"))
@@ -142,7 +142,7 @@ object ApproveOrg {
         .check(substring("true")))
 
       .exec(http("AdminOrg_040_010_ViewOrg")
-        .get(AdminUrl + "/api/organisations?organisationId=${OrgID}")
+        .get(AdminUrl + "/api/organisations?organisationId=#{OrgID}")
         .headers(Environment.getHeader)
         .header("accept", "application/json, text/plain, */*")
         .check(substring("organisationIdentifier")))
@@ -150,7 +150,7 @@ object ApproveOrg {
   /* These calls aren't used, as there are no users in the organisation
 
       .exec(http("AdminOrg_040_015_ViewOrg")
-        .get(AdminUrl + "/api/organisations?usersOrgId=${OrgID}")
+        .get(AdminUrl + "/api/organisations?usersOrgId=#{OrgID}")
         .headers(Environment.navigationHeader)
         .check(status.in(500, 304)))
 
@@ -159,13 +159,13 @@ object ApproveOrg {
         .headers(Environment.navigationHeader))
   */
       .exec(http("AdminOrg_040_025_ViewPBAAccounts1")
-        .get(AdminUrl + "/api/pbaAccounts/?accountNames=${PBA1},${PBA2},${PBA3}")
+        .get(AdminUrl + "/api/pbaAccounts/?accountNames=#{PBA1},#{PBA2},#{PBA3}")
         .headers(Environment.getHeader)
         .header("accept", "application/json, text/plain, */*")
         .check(substring("account_name").count.is(3)))
 
       .exec(http("AdminOrg_040_030_ViewPBAAccounts2")
-        .get(AdminUrl + "/api/pbaAccounts/?accountNames=${PBA1},${PBA2},${PBA3},${PBA1},${PBA2},${PBA3}")
+        .get(AdminUrl + "/api/pbaAccounts/?accountNames=#{PBA1},#{PBA2},#{PBA3},#{PBA1},#{PBA2},#{PBA3}")
         .headers(Environment.getHeader)
         .header("accept", "application/json, text/plain, */*")
         .check(substring("account_name").count.is(6)))
@@ -177,7 +177,7 @@ object ApproveOrg {
         .headers(Environment.navigationHeader))
 
       .exec(http("AdminOrg_040_040_ViewOrg")
-        .get(AdminUrl + "/api/organisations?organisationId=${OrgID}")
+        .get(AdminUrl + "/api/organisations?organisationId=#{OrgID}")
         .headers(Environment.navigationHeader))
 
   */
@@ -199,7 +199,7 @@ object ApproveOrg {
         .check(substring("true")))
 
       .exec(http("AdminOrg_045_010_ViewOrg")
-        .get(AdminUrl + "/api/organisations?organisationId=${OrgID}")
+        .get(AdminUrl + "/api/organisations?organisationId=#{OrgID}")
         .headers(Environment.getHeader)
         .header("accept", "application/json, text/plain, */*")
         .check(jsonPath("$.status").is("PENDING")))
@@ -212,7 +212,7 @@ object ApproveOrg {
       exec(http("AdminOrg_050_005_UpdatePBAs")
         .put(AdminUrl + "/api/updatePba")
         .headers(Environment.postHeader)
-        .header("x-xsrf-token", "${XSRFToken}")
+        .header("x-xsrf-token", "#{XSRFToken}")
         .body(ElFileBody("bodies/AdminAddPBA.json")))
 
       .exec(http("AdminOrg_050_010_IsAuthenticated")
@@ -222,21 +222,21 @@ object ApproveOrg {
         .check(substring("true")))
 
       .exec(http("AdminOrg_050_015_ViewOrg")
-        .get(AdminUrl + "/api/organisations?organisationId=${OrgID}")
+        .get(AdminUrl + "/api/organisations?organisationId=#{OrgID}")
         .headers(Environment.getHeader)
         .header("accept", "application/json, text/plain, */*")
         .check(jsonPath("$.status").is("PENDING"))
-        .check(substring("PBA${newPBA}")))
+        .check(substring("PBA#{newPBA}")))
 
   /* These calls aren't used, as there are no users in the organisation
 
       .exec(http("AdminOrg_050_020_AddPBA")
-        .get(AdminUrl + "/api/organisations?usersOrgId=${OrgID}")
+        .get(AdminUrl + "/api/organisations?usersOrgId=#{OrgID}")
         .headers(Environment.navigationHeader)
         .check(status.in(500, 304)))
   */
       .exec(http("AdminOrg_050_025_ViewPBAAccounts")
-        .get(AdminUrl + "/api/pbaAccounts/?accountNames=${PBA1},${PBA2},${PBA3},PBA${newPBA}")
+        .get(AdminUrl + "/api/pbaAccounts/?accountNames=#{PBA1},#{PBA2},#{PBA3},PBA#{newPBA}")
         .headers(Environment.getHeader)
         .header("accept", "application/json, text/plain, */*")
         .check(substring("account_name").count.is(4)))
@@ -265,9 +265,9 @@ object ApproveOrg {
 
     .group("AdminOrg_060_ApproveOrg") {
       exec(http("AdminOrg_060_005_ApproveOrg")
-        .put(AdminUrl + "/api/organisations/${OrgID}")
+        .put(AdminUrl + "/api/organisations/#{OrgID}")
         .headers(Environment.postHeader)
-        .header("x-xsrf-token", "${XSRFToken}")
+        .header("x-xsrf-token", "#{XSRFToken}")
         .body(ElFileBody("bodies/AdminApproveOrg.json")))
 
       .exec(http("AdminOrg_060_008_MonitoringTools")
@@ -291,7 +291,7 @@ object ApproveOrg {
       .exec(http("AdminOrg_060_015_SearchForOrg")
         .post(AdminUrl + "/api/organisations?status=PENDING,REVIEW")
         .headers(Environment.postHeader)
-        .header("x-xsrf-token", "${XSRFToken}")
+        .header("x-xsrf-token", "#{XSRFToken}")
         .body(ElFileBody("bodies/AdminOrgSearchOrg.json"))
         .check(jsonPath("$.total_records").is("0")))
     }
