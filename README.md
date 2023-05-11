@@ -1,5 +1,5 @@
-# multi-pba-ui-performance
-UI performance tests for Multi PBA
+# manageorg-performance
+UI performance tests for Manage Org
 
 To run locally:
 - Performance test against the perftest environment: `./gradlew gatlingRun`
