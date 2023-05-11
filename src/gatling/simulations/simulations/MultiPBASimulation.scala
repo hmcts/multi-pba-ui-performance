@@ -1,19 +1,16 @@
-package uk.gov.hmcts.multipba.simulation
+package simulations
 
 import com.typesafe.config.{Config, ConfigFactory}
 import io.gatling.core.Predef.{exec, _}
 import io.gatling.http.Predef._
-import uk.gov.hmcts.multipba.scenario._
-import uk.gov.hmcts.multipba.util._
+import scenarios._
+import utils._
 import io.gatling.core.controller.inject.open.OpenInjectionStep
 import io.gatling.commons.stats.assertion.Assertion
 import io.gatling.core.pause.PauseType
 import scala.concurrent.duration._
-
 import scala.io.Source
-import io.gatling.core.controller.inject.open.OpenInjectionStep
-import io.gatling.commons.stats.assertion.Assertion
-import io.gatling.core.pause.PauseType
+
 class MultiPBASimulation extends Simulation{
 
   val config: Config = ConfigFactory.load()
@@ -56,7 +53,7 @@ class MultiPBASimulation extends Simulation{
 	}
 
   val httpProtocol = http
-		.baseUrl(Environment.BaseUrl.replace("${env}", s"${env}"))
+		.baseUrl(Environment.BaseUrl.replace("#{env}", s"${env}"))
 		.inferHtmlResources()
 		.silentResources
     .disableCaching

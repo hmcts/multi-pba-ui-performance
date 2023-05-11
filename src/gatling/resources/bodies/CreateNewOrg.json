@@ -1,22 +1,22 @@
 {
   "fromValues": {
      "haveDXNumber": "dontHaveDX",
-     "orgName": "MultiPerf-${currentDate}-${currentTime}-${RandDigits}",
+     "orgName": "MultiPerf-#{currentDate}-#{currentTime}-#{RandDigits}",
      "createButton": "Continue",
      "officeAddressOne": "12 Test Street",
      "officeAddressTwo": null,
      "townOrCity": "London",
      "county": "London",
      "postcode": "KT25BU",
-     "PBANumber1": "PBA${RandPBA1}",
+     "PBANumber1": "PBA#{RandPBA1}",
      "addAnotherPBANumber": "Add another PBA number",
-     "PBANumber2": "PBA${RandPBA2}",
-     "PBANumber3": "PBA${RandPBA3}",
+     "PBANumber2": "PBA#{RandPBA2}",
+     "PBANumber3": "PBA#{RandPBA3}",
      "haveDx": "no",
      "haveSra": "no",
-     "firstName": "${FirstName}",
-     "lastName": "${LastName}",
-     "emailAddress": "${FirstName}.${LastName}@MultiPerf.com"
+     "firstName": "#{FirstName}",
+     "lastName": "#{LastName}",
+     "emailAddress": "#{FirstName}.#{LastName}@MultiPerf.com"
   },
   "event": "continue"
 }

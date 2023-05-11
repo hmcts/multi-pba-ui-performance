@@ -1,9 +1,9 @@
 {
   "paymentAccounts": [
-     "${PBA1}",
-     "${PBA2}",
-     "${PBA3}",
-     "PBA${newPBA}"
+     "#{PBA1}",
+     "#{PBA2}",
+     "#{PBA3}",
+     "PBA#{newPBA}"
   ],
-  "orgId": "${OrgID}"
+  "orgId": "#{OrgID}"
 }

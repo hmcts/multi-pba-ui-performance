@@ -1,27 +1,27 @@
 {
-  "organisationIdentifier": "${OrgID}",
+  "organisationIdentifier": "#{OrgID}",
   "contactInformation": [
      {
-        "addressLine1": "${addressLine1}",
+        "addressLine1": "#{addressLine1}",
         "addressLine2": null,
-        "townCity": "${townCity}",
-        "county": "${county}",
+        "townCity": "#{townCity}",
+        "county": "#{county}",
         "dxAddress": []
      }
   ],
   "superUser": {
-     "userIdentifier": "${firstName} ${lastName}",
-     "firstName": "${firstName} ${lastName}",
-     "lastName": "${firstName} ${lastName}",
-     "email": "${email}"
+     "userIdentifier": "#{firstName} #{lastName}",
+     "firstName": "#{firstName} #{lastName}",
+     "lastName": "#{firstName} #{lastName}",
+     "email": "#{email}"
   },
   "status": "ACTIVE",
-  "name": "${OrgName}",
+  "name": "#{OrgName}",
   "paymentAccount": [
-     "${PBA1}",
-     "${PBA2}",
-     "${PBA3}",
-     "PBA${newPBA}"
+     "#{PBA1}",
+     "#{PBA2}",
+     "#{PBA3}",
+     "PBA#{newPBA}"
   ],
   "pendingPaymentAccount": []
 }
