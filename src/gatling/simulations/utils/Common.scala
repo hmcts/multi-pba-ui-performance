@@ -1,4 +1,4 @@
-package util
+package utils
 
 import scala.util.Random
 import java.time.LocalDateTime

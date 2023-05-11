@@ -2,7 +2,7 @@ package scenarios
 
 import io.gatling.core.Predef._
 import io.gatling.http.Predef._
-import util._
+import utils._
 import java.io.{BufferedWriter, FileWriter}
 
 object CreateOrg {

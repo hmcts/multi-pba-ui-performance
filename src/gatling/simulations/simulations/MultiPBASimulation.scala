@@ -1,10 +1,10 @@
-package simulation
+package simulations
 
 import com.typesafe.config.{Config, ConfigFactory}
 import io.gatling.core.Predef.{exec, _}
 import io.gatling.http.Predef._
 import scenarios._
-import util._
+import utils._
 import io.gatling.core.controller.inject.open.OpenInjectionStep
 import io.gatling.commons.stats.assertion.Assertion
 import io.gatling.core.pause.PauseType
