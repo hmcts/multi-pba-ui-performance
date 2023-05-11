@@ -3,7 +3,7 @@ package simulation
 import com.typesafe.config.{Config, ConfigFactory}
 import io.gatling.core.Predef.{exec, _}
 import io.gatling.http.Predef._
-import scenario._
+import scenarios._
 import util._
 import io.gatling.core.controller.inject.open.OpenInjectionStep
 import io.gatling.commons.stats.assertion.Assertion
@@ -53,7 +53,7 @@ class MultiPBASimulation extends Simulation{
 	}
 
   val httpProtocol = http
-		.baseUrl(Environment.BaseUrl.replace("${env}", s"${env}"))
+		.baseUrl(Environment.BaseUrl.replace("#{env}", s"${env}"))
 		.inferHtmlResources()
 		.silentResources
     .disableCaching
