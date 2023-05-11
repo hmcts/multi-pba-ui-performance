@@ -9,11 +9,7 @@ import io.gatling.core.controller.inject.open.OpenInjectionStep
 import io.gatling.commons.stats.assertion.Assertion
 import io.gatling.core.pause.PauseType
 import scala.concurrent.duration._
-
 import scala.io.Source
-import io.gatling.core.controller.inject.open.OpenInjectionStep
-import io.gatling.commons.stats.assertion.Assertion
-import io.gatling.core.pause.PauseType
 
 class MultiPBASimulation extends Simulation{
 
