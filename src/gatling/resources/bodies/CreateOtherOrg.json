@@ -1,0 +1,73 @@
+{
+  "companyName": "Perf-#{currentDate}-#{currentTime}-#{RandDigits}",
+  "companyHouseNumber": null,
+  "hasDxReference": true,
+  "dxNumber": "931NR",
+  "dxExchange": "HAYES (MIDDLESEX)",
+  "services": [
+     {
+        "key": "AAA7",
+        "value": "Damages"
+     },
+     {
+        "key": "BHA1",
+        "value": "Employment Claims"
+     },
+     {
+        "key": "ABA5",
+        "value": "Family Private Law"
+     },
+     {
+        "key": "ABA6",
+        "value": "Probate"
+     }
+  ],
+  "otherServices": null,
+  "hasPBA": false,
+  "contactDetails": {
+     "firstName": "#{FirstName}",
+     "lastName": "#{LastName}",
+     "workEmailAddress": "#{FirstName}.#{LastName}@Perftest.com"
+  },
+  "address": {
+     "addressLine1": "Flat 1",
+     "addressLine2": "Bramber House",
+     "addressLine3": "Seven Kings Way",
+     "postTown": "Kingston Upon Thames",
+     "county": null,
+     "country": "United Kingdom",
+     "postCode": "KT2 5BU"
+  },
+  "organisationType": {
+     "key": "BARR",
+     "description": "Barrister"
+  },
+  "otherOrganisationType": null,
+  "otherOrganisationDetail": null,
+  "regulatorRegisteredWith": null,
+  "regulators": [
+     {
+        "regulatorType": "Other",
+        "regulatorName": "Perf test org",
+        "organisationRegistrationNumber": "Reg12"
+     },
+     {
+        "regulatorType": "Other",
+        "regulatorName": "Perftest Org",
+        "organisationRegistrationNumber": "Reg12"
+     }
+  ],
+  "hasIndividualRegisteredWithRegulator": true,
+  "individualRegulators": [
+     {
+        "regulatorType": "Charted Institute of Legal Executives",
+        "organisationRegistrationNumber": "Reg12"
+     },
+     {
+        "regulatorType": "Law Society of England and Wales",
+        "organisationRegistrationNumber": "Reg13"
+     }
+  ],
+  "pbaNumbers": [],
+  "inInternationalMode": false
+}

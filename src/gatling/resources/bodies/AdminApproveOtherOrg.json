@@ -1,0 +1,45 @@
+{
+  "organisationIdentifier": "#{OrgID}",
+  "contactInformation": [
+     {
+        "addressLine1": "#{addressLine1}",
+        "addressLine2": "#{addressLine2}",
+        "townCity": "#{townCity}",
+        "county": null,
+        "dxAddress": [
+           {
+              "dxNumber": "931NR",
+              "dxExchange": "HAYES (MIDDLESEX)"
+           }
+        ]
+     }
+  ],
+  "superUser": {
+     "userIdentifier": "#{firstName} #{lastName}",
+     "firstName": "#{firstName} #{lastName}",
+     "lastName": "#{firstName} #{lastName}",
+     "email": "#{firstName}.#{lastName}@perftest.com"
+  },
+  "status": "ACTIVE",
+  "name": "#{OrgName}",
+  "paymentAccount": [],
+  "pendingPaymentAccount": [],
+  "orgAttributes": [
+     {
+        "key": "AAA7",
+        "value": "Damages"
+     },
+     {
+        "key": "BHA1",
+        "value": "Employment Claims"
+     },
+     {
+        "key": "ABA5",
+        "value": "Family Private Law"
+     },
+     {
+        "key": "ABA6",
+        "value": "Probate"
+     }
+  ]
+}
