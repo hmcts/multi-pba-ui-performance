@@ -42,7 +42,9 @@ object CreateOrg {
 
 		.pause(Environment.thinkTime)
 
-		.exec(http("CreateOrg_020_SubmitNewOrgRegistration")
+  val SubmitOrg = 
+
+		exec(http("CreateOrg_020_SubmitNewOrgRegistration")
 			.post("/external/register-org/register")
 			.headers(Environment.postHeader)
       .header("x-xsrf-token", "#{XSRFToken}")
@@ -52,7 +54,7 @@ object CreateOrg {
     .pause(Environment.thinkTime)
 
     //Outputs the newly created Org ID and Org Name
-    .exec {
+    /*.exec {
       session =>
         val fw = new BufferedWriter(new FileWriter("NewOrgIDs.csv", true))
         try {
@@ -60,6 +62,17 @@ object CreateOrg {
         }
         finally fw.close()
         session
-    }  
+    }*/
+
+  val SubmitOtherOrg = 
+
+    exec(http("CreateOrg_020_SubmitOtherOrgRegistration")
+			.post("/external/register-org-new/register")
+			.headers(Environment.postHeader)
+      .header("x-xsrf-token", "#{XSRFToken}")
+			.body(ElFileBody("bodies/CreateOtherOrg.json"))
+      .check(jsonPath("$.organisationIdentifier").saveAs("orgId")))
+
+    .pause(Environment.thinkTime)
 
 }

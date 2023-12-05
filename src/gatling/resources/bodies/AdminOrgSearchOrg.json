@@ -1,6 +1,6 @@
 {
   "searchRequest": {
-     "search_filter": "MultiPerf-#{currentDate}-#{currentTime}-#{RandDigits}",
+     "search_filter": "#{currentDate}-#{currentTime}-#{RandDigits}",
      "sorting_parameters": [
         {
            "sort_by": "organisationId",

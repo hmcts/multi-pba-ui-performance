@@ -34,7 +34,7 @@ gatling {
   gatlingVersion '3.9.3'
   scalaVersion '2.13.10'
   simulations = {
-    include "simulations/MultiPBASimulation.scala"
+    include "simulations/ManageOrgSimulation.scala"
   }
 }
  

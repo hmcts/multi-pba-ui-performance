@@ -11,7 +11,7 @@ import io.gatling.core.pause.PauseType
 import scala.concurrent.duration._
 import scala.io.Source
 
-class MultiPBASimulation extends Simulation{
+class ManageOrgSimulation extends Simulation{
 
   val config: Config = ConfigFactory.load()
 	/* TEST TYPE DEFINITION */
@@ -34,6 +34,7 @@ class MultiPBASimulation extends Simulation{
 
 	/* PERFORMANCE TEST CONFIGURATION */
 	val approveOrgTargetPerHour:Double = 360 //360
+  val approveOtherOrgTargetPerHour:Double = 20
 
 	val rampUpDurationMins = 5 //5
 	val rampDownDurationMins = 5 //5 
@@ -69,12 +70,28 @@ class MultiPBASimulation extends Simulation{
       exec(_.set("env", s"${env}"))
         .exec(
           CreateOrg.CreateNewOrg,
+          CreateOrg.SubmitOrg,
           ApproveOrg.ApproveOrgHomepage,
           ApproveOrg.ApproveOrgLogin,
           ApproveOrg.SearchOrg,
           ApproveOrg.ViewOrg,
           ApproveOrg.AddNewPBA,
           ApproveOrg.ApproveNewOrg,
+          ApproveOrg.Logout
+        )
+    }
+
+  val ManageAndApproveOtherOrg = scenario("Create a new Other org and Approve")
+    .exitBlockOnFail {
+      exec(_.set("env", s"${env}"))
+        .exec(
+          CreateOrg.CreateNewOrg,
+          CreateOrg.SubmitOtherOrg,
+          ApproveOrg.ApproveOrgHomepage,
+          ApproveOrg.ApproveOrgLogin,
+          ApproveOrg.SearchOrg,
+          ApproveOrg.ViewOrg,
+          ApproveOrg.ApproveNewOtherOrg,
           ApproveOrg.Logout
         )
     }
@@ -111,6 +128,7 @@ class MultiPBASimulation extends Simulation{
         if (debugMode == "off") {
           Seq(global.successfulRequests.percent.gte(95),
             details("CreateOrg_020_SubmitNewOrgRegistration").successfulRequests.count.gte((approveOrgTargetPerHour * 0.9).ceil.toInt),
+            details("CreateOrg_020_SubmitOtherOrgRegistration").successfulRequests.count.gte((approveOrgTargetPerHour * 0.9).ceil.toInt),
             details("AdminOrg_050_AddPBA").successfulRequests.count.gte((approveOrgTargetPerHour * 0.9).ceil.toInt),
             details("AdminOrg_060_ApproveOrg").successfulRequests.count.gte((approveOrgTargetPerHour * 0.9).ceil.toInt)
           )
@@ -118,8 +136,9 @@ class MultiPBASimulation extends Simulation{
         else{
           Seq(global.successfulRequests.percent.gte(95),
             details("CreateOrg_020_SubmitNewOrgRegistration").successfulRequests.count.is(1),
+            details("CreateOrg_020_SubmitOtherOrgRegistration").successfulRequests.count.is(1),
             details("AdminOrg_050_AddPBA").successfulRequests.count.is(1),
-            details("AdminOrg_060_ApproveOrg").successfulRequests.count.is(1)
+            details("AdminOrg_060_ApproveOrg").successfulRequests.count.is(2)
           )
         }
       case "pipeline" =>
@@ -133,6 +152,7 @@ class MultiPBASimulation extends Simulation{
 
 	setUp(
 		ManageAndApproveOrg.inject(simulationProfile(testType, approveOrgTargetPerHour, numberOfPipelineUsers)).pauses(pauseOption),
+    ManageAndApproveOtherOrg.inject(simulationProfile(testType, approveOtherOrgTargetPerHour, numberOfPipelineUsers)).pauses(pauseOption),
 		
 	).protocols(httpProtocol)
      .assertions(assertions(testType))

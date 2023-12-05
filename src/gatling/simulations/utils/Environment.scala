@@ -4,7 +4,6 @@ object Environment {
 
   val idamURL = "https://idam-web-public.#{env}.platform.hmcts.net"
   val IDAMUrl = "https://idam-api.#{env}.platform.hmcts.net"
-  val S2SUrl = "http://rpe-service-auth-provider-#{env}.service.core-compute-#{env}.internal/testing-support"
   val BaseUrl = "https://manage-org.#{env}.platform.hmcts.net"
   val adminUrl = "https://administer-orgs.#{env}.platform.hmcts.net"
 

@@ -120,11 +120,12 @@ object ApproveOrg {
       .check(jsonPath("$.organisations[0].organisationIdentifier").saveAs("OrgID"))
       .check(jsonPath("$.organisations[0].name").saveAs("OrgName"))
       .check(jsonPath("$.organisations[0].contactInformation[0].addressLine1").saveAs("addressLine1"))
+      .check(jsonPath("$.organisations[0].contactInformation[0].addressLine2").optional.saveAs("addressLine2"))
       .check(jsonPath("$.organisations[0].contactInformation[0].townCity").saveAs("townCity"))
       .check(jsonPath("$.organisations[0].contactInformation[0].county").saveAs("county"))
-      .check(jsonPath("$.organisations[0].pendingPaymentAccount[0]").saveAs("PBA1"))
-      .check(jsonPath("$.organisations[0].pendingPaymentAccount[1]").saveAs("PBA2"))
-      .check(jsonPath("$.organisations[0].pendingPaymentAccount[2]").saveAs("PBA3"))
+      .check(jsonPath("$.organisations[0].pendingPaymentAccount[0]").optional.saveAs("PBA1"))
+      .check(jsonPath("$.organisations[0].pendingPaymentAccount[1]").optional.saveAs("PBA2"))
+      .check(jsonPath("$.organisations[0].pendingPaymentAccount[2]").optional.saveAs("PBA3"))
       .check(jsonPath("$.organisations[0].superUser.firstName").saveAs("firstName"))
       .check(jsonPath("$.organisations[0].superUser.lastName").saveAs("lastName"))
       .check(jsonPath("$.organisations[0].superUser.email").saveAs("email"))
@@ -158,17 +159,19 @@ object ApproveOrg {
         .get(AdminUrl + "/api/monitoring-tools")
         .headers(Environment.navigationHeader))
   */
-      .exec(http("AdminOrg_040_025_ViewPBAAccounts1")
-        .get(AdminUrl + "/api/pbaAccounts/?accountNames=#{PBA1},#{PBA2},#{PBA3}")
-        .headers(Environment.getHeader)
-        .header("accept", "application/json, text/plain, */*")
-        .check(substring("account_name").count.is(3)))
+      .doIf("#{PBA1.exists()}") {
+        exec(http("AdminOrg_040_025_ViewPBAAccounts1")
+          .get(AdminUrl + "/api/pbaAccounts/?accountNames=#{PBA1},#{PBA2},#{PBA3}")
+          .headers(Environment.getHeader)
+          .header("accept", "application/json, text/plain, */*")
+          .check(substring("account_name").count.is(3)))
 
-      .exec(http("AdminOrg_040_030_ViewPBAAccounts2")
-        .get(AdminUrl + "/api/pbaAccounts/?accountNames=#{PBA1},#{PBA2},#{PBA3},#{PBA1},#{PBA2},#{PBA3}")
-        .headers(Environment.getHeader)
-        .header("accept", "application/json, text/plain, */*")
-        .check(substring("account_name").count.is(6)))
+        .exec(http("AdminOrg_040_030_ViewPBAAccounts2")
+          .get(AdminUrl + "/api/pbaAccounts/?accountNames=#{PBA1},#{PBA2},#{PBA3},#{PBA1},#{PBA2},#{PBA3}")
+          .headers(Environment.getHeader)
+          .header("accept", "application/json, text/plain, */*")
+          .check(substring("account_name").count.is(6)))
+      }
 
   /* These calls aren't used
 
@@ -235,11 +238,13 @@ object ApproveOrg {
         .headers(Environment.navigationHeader)
         .check(status.in(500, 304)))
   */
+      
       .exec(http("AdminOrg_050_025_ViewPBAAccounts")
         .get(AdminUrl + "/api/pbaAccounts/?accountNames=#{PBA1},#{PBA2},#{PBA3},PBA#{newPBA}")
         .headers(Environment.getHeader)
         .header("accept", "application/json, text/plain, */*")
         .check(substring("account_name").count.is(4)))
+      
 
   /* These calls aren't used
       .exec(http("AdminOrg_00_030_AddPBA")
@@ -269,6 +274,53 @@ object ApproveOrg {
         .headers(Environment.postHeader)
         .header("x-xsrf-token", "#{XSRFToken}")
         .body(ElFileBody("bodies/AdminApproveOrg.json")))
+
+      .exec(http("AdminOrg_060_008_MonitoringTools")
+        .get(AdminUrl + "/api/monitoring-tools")
+        .headers(Environment.getHeader)
+        .header("accept", "application/json, text/plain, */*")
+        .check(substring("key")))
+
+      .exec(http("AdminOrg_060_010_IsAuthenticated1")
+        .get(AdminUrl + "/auth/isAuthenticated")
+        .headers(Environment.getHeader)
+        .header("accept", "application/json, text/plain, */*")
+        .check(substring("true")))
+
+      .exec(http("AdminOrg_060_012_IsAuthenticated2")
+        .get(AdminUrl + "/auth/isAuthenticated")
+        .headers(Environment.getHeader)
+        .header("accept", "application/json, text/plain, */*")
+        .check(substring("true")))
+
+      .exec(http("AdminOrg_060_015_SearchForOrg")
+        .post(AdminUrl + "/api/organisations?status=PENDING,REVIEW")
+        .headers(Environment.postHeader)
+        .header("x-xsrf-token", "#{XSRFToken}")
+        .body(ElFileBody("bodies/AdminOrgSearchOrg.json"))
+        .check(jsonPath("$.total_records").is("0")))
+    }
+
+    .pause(Environment.thinkTime)
+
+  val ApproveNewOtherOrg = 
+
+    group("AdminOrg_055_Approval") {
+      exec(http("AdminOrg_055_005_IsAuthenticated")
+        .get(AdminUrl + "/auth/isAuthenticated")
+        .headers(Environment.getHeader)
+        .header("accept", "application/json, text/plain, */*")
+        .check(substring("true")))
+    }
+
+    .pause(Environment.thinkTime)
+
+    .group("AdminOrg_060_ApproveOrg") {
+      exec(http("AdminOrg_060_005_ApproveOrg")
+        .put(AdminUrl + "/api/organisations/#{OrgID}")
+        .headers(Environment.postHeader)
+        .header("x-xsrf-token", "#{XSRFToken}")
+        .body(ElFileBody("bodies/AdminApproveOtherOrg.json")))
 
       .exec(http("AdminOrg_060_008_MonitoringTools")
         .get(AdminUrl + "/api/monitoring-tools")
