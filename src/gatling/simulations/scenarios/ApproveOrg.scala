@@ -41,7 +41,7 @@ object ApproveOrg {
         .headers(Environment.navigationHeader)
         .header("sec-fetch-site", "same-origin")
         .check(css("input[name='_csrf']", "value").saveAs("csrfToken"))
-        .check(regex("callback&state=(.*)&nonce=").saveAs("state"))
+        .check(regex("callback&state=(.*)&").saveAs("state"))
         .check(regex("&nonce=(.*)&").saveAs("nonce")))
 
       .exec(getCookieValue(CookieKey("XSRF-TOKEN").withDomain("administer-orgs.#{env}.platform.hmcts.net").saveAs("XSRFToken")))
