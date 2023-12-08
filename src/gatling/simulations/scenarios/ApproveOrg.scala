@@ -41,8 +41,8 @@ object ApproveOrg {
         .headers(Environment.navigationHeader)
         .header("sec-fetch-site", "same-origin")
         .check(css("input[name='_csrf']", "value").saveAs("csrfToken"))
-        .check(regex("callback&state=(.*)&").saveAs("state"))
-        .check(regex("&nonce=(.*)&").saveAs("nonce")))
+        .check(regex("/oauth2/callback&amp;state=(.*)&amp;nonce=").saveAs("state"))
+        .check(regex("nonce=(.*)&amp;response_type").saveAs("nonce")))
 
       .exec(getCookieValue(CookieKey("XSRF-TOKEN").withDomain("administer-orgs.#{env}.platform.hmcts.net").saveAs("XSRFToken")))
     }
@@ -51,8 +51,8 @@ object ApproveOrg {
 
   val ApproveOrgLogin =
 
-    feed(adminusers)
-    .group("AdminOrg_020_Login") {
+    // feed(adminusers)
+    group("AdminOrg_020_Login") {
       exec(http("AdminOrg_020_005_Login")
         .post(Environment.idamURL + "/login?client_id=xuiaowebapp&redirect_uri=" + AdminUrl + "/oauth2/callback&state=#{state}&nonce=#{nonce}&response_type=code&scope=profile%20openid%20roles%20manage-user%20create-user&prompt=")
         .headers(Environment.navigationHeader)
@@ -63,7 +63,8 @@ object ApproveOrg {
         .formParam("selfRegistrationEnabled", "false")
         .formParam("mojLoginEnabled", "true")
         .formParam("_csrf", "#{csrfToken}")
-        .check(substring("base href")))
+        .check(substring("base href"))
+        )
 
       .exec(http("AdminOrg_020_010_EnvConfig1")
         .get(AdminUrl + "/api/environment/config")
