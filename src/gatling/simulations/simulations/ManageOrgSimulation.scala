@@ -40,7 +40,7 @@ class ManageOrgSimulation extends Simulation{
 	val rampDownDurationMins = 5 //5 
 	val testDurationMins = 60 //60
 
-	val numberOfPipelineUsers = 5
+	val numberOfPipelineUsers = 1
 	val pipelinePausesMillis:Long = 3000 //3 seconds
 
 	//Determine the pause pattern to use:
