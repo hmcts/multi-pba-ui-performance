@@ -44,7 +44,7 @@ object ApproveOrg {
         .check(regex("callback&state=(.*)&nonce=").saveAs("state"))
         .check(regex("&nonce=(.*)&response_type").saveAs("nonce")))
 
-      .exec(getCookieValue(CookieKey("XSRF-TOKEN").withDomain("administer-orgs.perftest.platform.hmcts.net").saveAs("XSRFToken")))
+      .exec(getCookieValue(CookieKey("XSRF-TOKEN").withDomain("administer-orgs.#{env}.platform.hmcts.net").saveAs("XSRFToken")))
     }
 
     .pause(Environment.thinkTime)
